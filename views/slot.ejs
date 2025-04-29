@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Slot Machine</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>🎰 Slot Machine</h1>
+
+  <p><strong>Balance:</strong> $<%= balance %></p>
+
+  <% if (result) { %>
+    <p><strong>Result:</strong> <%= result %></p>
+  <% } %>
+
+  <% if (spin.length) { %>
+    <p>Spin: <%= spin.join(' | ') %></p>
+  <% } %>
+
+  <form method="POST" action="/spin">
+    <label>Enter Bet:</label>
+    <input type="number" name="bet" min="1" required>
+    <button type="submit">Spin</button>
+  </form>
+
+  <hr>
+  <p><a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/profile">Profile</a></p>
+</body>
+</html>

@@ -17,6 +17,7 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use('/', require('./routes/slotRoute'));
 app.use('/', require('./routes/auth'));
 
 const PORT = 3000;

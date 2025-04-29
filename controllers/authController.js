@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
       req.session.user = user;
       res.redirect('/profile');
     } else {
-      res.send('❌ Invalid credentials');
+      res.send('Invalid credentials');
     }
   } catch (err) {
     console.error(err);
