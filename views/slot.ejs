@@ -2,28 +2,25 @@
 <html>
 <head>
   <title>Slot Machine</title>
-  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h1>🎰 Slot Machine</h1>
+  <h1>Welcome, <%= user.name %>, to the Slot Machine</h1>
+  <p>Your balance: <%= balance %>$</p>
 
-  <p><strong>Balance:</strong> $<%= balance %></p>
-
-  <% if (result) { %>
-    <p><strong>Result:</strong> <%= result %></p>
-  <% } %>
-
-  <% if (spin.length) { %>
-    <p>Spin: <%= spin.join(' | ') %></p>
-  <% } %>
-
-  <form method="POST" action="/spin">
-    <label>Enter Bet:</label>
-    <input type="number" name="bet" min="1" required>
+  <form method="POST" action="/slot">
+    <label>Enter your bet:</label>
+    <input type="number" name="bet" min="1" required />
     <button type="submit">Spin</button>
   </form>
 
-  <hr>
-  <p><a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/profile">Profile</a></p>
+  <% if (spin && spin.length) { %>
+    <p>Spin: <%= spin.join(' | ') %></p>
+  <% } %>
+
+  <% if (message) { %>
+    <p><strong><%= message %></strong></p>
+  <% } %>
+
+  <p><a href="/profile">Back to profile</a></p>
 </body>
 </html>

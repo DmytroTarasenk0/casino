@@ -17,8 +17,8 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use('/', require('./routes/slotRoute'));
 app.use('/', require('./routes/auth'));
+app.use('/', require('./routes/slotRoute'));
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

@@ -1,56 +1,82 @@
-function randDigit() {
-    return Math.floor(Math.random() * 10);
-  }
-  
-  exports.showSlot = (req, res) => {
-    if (typeof req.session.balance !== 'number') {
-      req.session.balance = 50;
-    }
-  
+const { poolPromise } = require('../db/sql');
+
+exports.showSlotPage = async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('id', req.session.user.id)
+      .query('SELECT balance FROM Users WHERE id = @id');
+
+    const balance = result.recordset[0]?.balance || 0;
+
     res.render('slot', {
-      balance: req.session.balance,
-      result: null,
+      user: req.session.user,
+      balance,
       spin: [],
-      session: req.session
+      message: ''
     });
-  };
-  
-  exports.spin = (req, res) => {
-    const bet = parseInt(req.body.bet);
-    const balance = req.session.balance;
-  
-    if (!bet || bet <= 0 || bet > balance) {
+  } catch (err) {
+    console.error('Error loading slot page:', err);
+    res.send('Server error loading slot machine');
+  }
+};
+
+exports.spinSlot = async (req, res) => {
+  const userId = req.session.user?.id;
+  const bet = parseInt(req.body.bet);
+
+  if (!userId || isNaN(bet) || bet <= 0) {
+    return res.redirect('/slot');
+  }
+
+  try {
+    const pool = await poolPromise;
+
+    const userResult = await pool.request()
+      .input('id', userId)
+      .query('SELECT name, balance FROM Users WHERE id = @id');
+
+    const user = userResult.recordset[0];
+
+    if (!user || user.balance < bet) {
       return res.render('slot', {
-        balance,
-        result: 'Invalid bet amount.',
+        user: req.session.user,
+        balance: user?.balance || 0,
         spin: [],
-        session: req.session
+        message: 'Insufficient balance.'
       });
     }
-  
-    const spin = [randDigit(), randDigit(), randDigit()];
-    const [a, b, c] = spin;
-    let result = '';
-    let win = 0;
-  
-    if (a === b && b === c) {
-      win = bet * 10;
-      result = `JACKPOT! You won $${win}`;
-    } else if (a === b || b === c) {
-      win = bet * 5;
-      result = `Two in a row! You won $${win}`;
+
+    const spin = [0, 1, 2].map(() => Math.floor(Math.random() * 10));
+    let winnings = 0;
+    let message = '';
+
+    if (spin[0] === spin[1] && spin[0] === spin[2]) {
+      winnings = bet * 10;
+      message = 'Jackpot! You win $' + winnings;
+    } else if ((spin[0] === spin[1]) || (spin[1] === spin[2])) {
+      winnings = bet * 5;
+      message = 'Two in a row! You win $' + winnings;
     } else {
-      win = -bet;
-      result = `You lost $${bet}`;
+      winnings = 0;
+      message = 'You lost $' + bet;
     }
-  
-    req.session.balance += win;
-  
+
+    const newBalance = user.balance - bet + winnings;
+
+    await pool.request()
+      .input('id', userId)
+      .input('balance', newBalance)
+      .query('UPDATE Users SET balance = @balance WHERE id = @id');
+
     res.render('slot', {
-      balance: req.session.balance,
-      result,
+      user: req.session.user,
+      balance: newBalance,
       spin,
-      session: req.session
+      message
     });
-  };
-  
+  } catch (err) {
+    console.error('Spin error:', err);
+    res.send('Error processing slot spin');
+  }
+};

@@ -1,20 +1,5 @@
 const { poolPromise } = require('../db/sql');
 
-exports.register = async (req, res) => {
-  const { name, password } = req.body;
-  try {
-    const pool = await poolPromise;
-    await pool.request()
-      .input('name', name)
-      .input('password', password)
-      .query('INSERT INTO Users (name, password, balance) VALUES (@name, @password, 50)');
-    res.redirect('/login');
-  } catch (err) {
-    console.error(err);
-    res.send('Registration error');
-  }
-};
-
 exports.login = async (req, res) => {
   const { name, password } = req.body;
   try {
@@ -26,18 +11,44 @@ exports.login = async (req, res) => {
 
     const user = result.recordset[0];
     if (user) {
-      req.session.user = user;
-      res.redirect('/profile');
+      req.session.user = { id: user.id, name: user.name };
+      res.redirect('/slot');
     } else {
-      res.send('Invalid credentials');
+      res.render('login', { error: 'Invalid credentials' });
     }
   } catch (err) {
     console.error(err);
-    res.send('Login error');
+    res.render('login', { error: 'Server error' });
   }
 };
 
-exports.profile = (req, res) => {
-  if (!req.session.user) return res.redirect('/login');
-  res.render('profile', { user: req.session.user });
+exports.register = async (req, res) => {
+  const { name, password } = req.body;
+  try {
+    const pool = await poolPromise;
+    await pool.request()
+      .input('name', name)
+      .input('password', password)
+      .input('balance', 50)
+      .query('INSERT INTO Users (name, password, balance) VALUES (@name, @password, @balance)');
+    res.redirect('/login');
+  } catch (err) {
+    console.error(err);
+    res.render('register', { error: 'Registration failed' });
+  }
+};
+
+exports.profile = async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('id', req.session.user.id)
+      .query('SELECT * FROM Users WHERE id = @id');
+
+    const user = result.recordset[0];
+    res.render('profile', { user });
+  } catch (err) {
+    console.error(err);
+    res.send('Error loading profile');
+  }
 };
