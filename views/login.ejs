@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head><title>Login</title></head>
-<body>
-  <h2>Login</h2>
-  <form action="/login" method="POST">
-    <input type="text" name="name" placeholder="Name" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-  </form>
-  <a href="/register">Register</a>
-</body>
+  <head>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login</h2>
+      <% if (typeof error !== 'undefined') { %>
+        <p style="color: red;"><%= error %></p>
+      <% } %>
+      <form method="POST" action="/login">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="/register">Register</a></p>
+    </div>
+  </body>
 </html>

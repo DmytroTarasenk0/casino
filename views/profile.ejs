@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head><title>Profile</title></head>
+<head>
+  <link rel="stylesheet" href="/style.css">
+  <title>Profile</title>
+</head>
 <body>
-  <h2>Welcome, <%= user.name %>!</h2>
-  <p>Your balance: $<%= user.balance %></p>
-  <a href="/slot">Play Slot Machine</a>
-  <a href="/login">Log out</a>
+  <% if (user) { %>
+    <p>Welcome, <%= user.username %> | Balance: $<%= balance %></p>
+    <form action="/logout" method="get">
+      <button>Logout</button>
+    </form>
+    <form action="/add-funds" method="post">
+      <input type="number" name="amount" placeholder="Sum" required style="width: 100px;" />
+      <button type="submit">Add Funds</button>
+    </form>
+  <% } else { %>
+    <div class="container">
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    </div>
+  <% } %>
+
+  <h2>SMT</h2>
 </body>
 </html>
