@@ -2,25 +2,39 @@
 <html>
 <head>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/profile.css">
   <title>Profile</title>
 </head>
 <body>
-  <% if (user) { %>
-    <p>Welcome, <%= user.username %> | Balance: $<%= balance %></p>
-    <form action="/logout" method="get">
-      <button>Logout</button>
-    </form>
-    <form action="/add-funds" method="post">
-      <input type="number" name="amount" placeholder="Sum" required style="width: 100px;" />
-      <button type="submit">Add Funds</button>
-    </form>
-  <% } else { %>
-    <div class="container">
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+  <div class="container">
+    <div class="profile-header">
+      <h1>Profile</h1>
+      <form action="/logout" method="get">
+        <button class="btn btn-logout">Logout</button>
+      </form>
     </div>
-  <% } %>
 
-  <h2>SMT</h2>
+    <div class="balance-display">
+      <p>Welcome, <span style="color: #fff;"><%= user.username %></span></p>
+      <p>Balance: $<%= balance %></p>
+    </div>
+
+    <div class="add-funds-form">
+      <h2>Add Funds</h2>
+      <form action="/add-funds" method="post">
+        <input 
+          type="number" 
+          name="amount" 
+          placeholder="Amount" 
+          required 
+          class="input"
+        />
+        <button type="submit" class="btn">Deposit</button>
+      </form>
+    </div>
+    <p style="text-align: center; margin-top: 20px;">
+      Try to spin the <a href="/slot" class="link">wheel</a>
+    </p>
+  </div>
 </body>
 </html>

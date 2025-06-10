@@ -24,6 +24,17 @@ const UserService = {
       return true;
     });
   },
+
+  async deductFunds(userId, amount) {
+    return await User.sequelize.transaction(async (t) => {
+      const user = await User.findByPk(userId, { transaction: t });
+      if (!user) throw new Error('User not found');
+      if (user.balance < amount) throw new Error('Insufficient funds');
+      user.balance -= parseFloat(amount);
+      await user.save({ transaction: t });
+      return true;
+    });
+  }
 };
 
 module.exports = UserService;

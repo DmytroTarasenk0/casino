@@ -59,7 +59,7 @@ const userController = {
   async addFunds(req, res) {
     if (!req.session.user) {
       req.session.message = 'Login to add funds';
-      return res.redirect('/profile');
+      return res.redirect('/login');
     }
 
     const userId = req.session.user.id;
@@ -71,6 +71,22 @@ const userController = {
       req.session.message = `Error: ${err.message}`;
     }
     res.redirect('/profile');
+  },
+
+  async deductFunds(req, res) {
+    if (!req.session.user) {
+      req.session.message = 'Login to deduct funds';
+      return res.redirect('/login');
+    }
+
+    const userId = req.session.user.id;
+    const amount = parseFloat(req.body.amount);
+    try {
+      await UserService.deductFunds(userId, amount);
+      req.session.message = 'Balance updated successfully';
+    } catch (err) {
+      req.session.message = `Error: ${err.message}`;
+    }
   }
 };
 

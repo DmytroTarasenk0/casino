@@ -8,6 +8,7 @@ router.get('/register', userController.getRegister);
 router.post('/register', userController.postRegister);
 router.get('/logout', userController.logout);
 router.post('/add-funds', userController.addFunds);
+router.post('/deduct-funds', userController.deductFunds);
 router.get('/profile', userController.getProfile);
 
 module.exports = router;

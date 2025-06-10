@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/slot.css">
+  <title>Wheel</title>
+</head>
+<body>
+  <div class="container">
+  <div class="balance-display">
+    <p>Welcome, <span style="color: #fff;"><%= user.username %></span></p>
+    <p>Balance: $<%= balance %></p>
+  </div>
+
+  <div class="slot-machine">
+    <div class="reels">
+      <div class="reel" id="reel1"></div>
+      <div class="reel" id="reel2"></div>
+      <div class="reel" id="reel3"></div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-spin">SPIN</button>
+      <div class="message-result"></div>
+    </div>
+  </div>
+
+  <p style="text-align: center; margin-top: 20px; margin-bottom: auto;">
+    Back to <a href="/profile" class="link">profile</a>
+</p>
+</div>
+
+<script src="/slot.js"></script>
+</body>
+</html>

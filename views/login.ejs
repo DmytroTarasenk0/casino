@@ -1,20 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="/style.css">
-  </head>
-  <body>
-    <div class="container">
-      <h2>Login</h2>
-      <% if (typeof error !== 'undefined') { %>
-        <p style="color: red;"><%= error %></p>
-      <% } %>
-      <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username" required />
-        <input type="password" name="password" placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-      <p>Don't have an account? <a href="/register">Register</a></p>
-    </div>
-  </body>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    
+    <% if (typeof error !== 'undefined') { %>
+      <div class="error-message"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/login">
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="Username" 
+        required 
+        class="input"
+      />
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="Password" 
+        required 
+        class="input"
+      />
+      <button type="submit" class="btn">Proceed</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px;">
+      Don't have an account? <a href="/register" class="link">Register here</a>
+    </p>
+  </div>
+</body>
 </html>
