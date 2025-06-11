@@ -7,6 +7,7 @@
 </head>
 <body>
   <div class="container">
+    <div id="error-message" class="error-message" style="display:none;"></div>
     <div class="profile-header">
       <h1>Profile</h1>
       <form action="/logout" method="get">
@@ -16,12 +17,12 @@
 
     <div class="balance-display">
       <p>Welcome, <span style="color: #fff;"><%= user.username %></span></p>
-      <p>Balance: $<%= balance %></p>
+      <p>Balance: $<span id="balance"><%= balance %></span></p>
     </div>
 
     <div class="add-funds-form">
       <h2>Add Funds</h2>
-      <form action="/add-funds" method="post">
+      <form  method="POST" action="/add-funds">
         <input 
           type="number" 
           name="amount" 
@@ -36,5 +37,7 @@
       Try to spin the <a href="/slot" class="link">wheel</a>
     </p>
   </div>
+
+  <script src="/profile.js"></script>
 </body>
 </html>

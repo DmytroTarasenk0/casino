@@ -10,6 +10,19 @@ const userController = {
     res.render('register');
   },
 
+  async getBalance(req, res) {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'Not logged in' });
+    }
+    
+    try {
+      const user = await UserService.getUserById(req.session.user.id);
+      res.json({ balance: user.balance.toFixed(2) });
+    } catch (err) {
+      res.status(500).json({ error: 'Server error' });
+    }
+  },
+
   async getProfile(req, res) {
     if (!req.session.user) {
       return res.redirect('/login');
@@ -58,34 +71,43 @@ const userController = {
 
   async addFunds(req, res) {
     if (!req.session.user) {
-      req.session.message = 'Login to add funds';
-      return res.redirect('/login');
+      return res.status(401).json({ error: 'Not logged in' });
     }
 
     const userId = req.session.user.id;
     const amount = parseFloat(req.body.amount);
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid amount' });
+    }
+
     try {
       await UserService.addFunds(userId, amount);
-      req.session.message = 'Balance updated successfully';
+      const user = await UserService.getUserById(userId);
+      return res.json({ balance: user.balance.toFixed(2), message: 'Balance updated successfully' });
     } catch (err) {
-      req.session.message = `Error: ${err.message}`;
+      console.error('addFunds error:', err);
+      return res.status(500).json({ error: err.message });
     }
-    res.redirect('/profile');
   },
 
   async deductFunds(req, res) {
     if (!req.session.user) {
-      req.session.message = 'Login to deduct funds';
-      return res.redirect('/login');
+      return res.status(401).json({ error: 'Not logged in' });
     }
 
     const userId = req.session.user.id;
     const amount = parseFloat(req.body.amount);
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid amount' });
+    }
+
     try {
       await UserService.deductFunds(userId, amount);
-      req.session.message = 'Balance updated successfully';
+      const user = await UserService.getUserById(userId);
+      return res.json({ balance: user.balance.toFixed(2), message: 'Balance updated successfully' });
     } catch (err) {
-      req.session.message = `Error: ${err.message}`;
+      console.error('deductFunds error:', err);
+      return res.status(500).json({ error: err.message });
     }
   }
 };

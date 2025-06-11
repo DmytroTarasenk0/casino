@@ -31,7 +31,7 @@ function spinReel(reel, duration) {
 
   setTimeout(() => {
     symbolsContainer.style.transition = `transform ${duration}ms cubic-bezier(0.9, 0, 0.3, 0.1)`;
-    symbolsContainer.style.transform = `translateY(20px)`;
+    symbolsContainer.style.transform = `translateY(0px)`;
   }, 50);
 
   setTimeout(() => {
@@ -46,5 +46,37 @@ function spinReel(reel, duration) {
 document.querySelector('.btn-spin').addEventListener('click', () => {
   reels.forEach((reel, i) => {
     spinReel(reel, 1200 + i * 300);
+  });
+});
+
+function updateBalance() {
+  fetch('/balance')
+    .then(res => res.json())
+    .then(data => {
+      if (data.balance !== undefined) {
+        document.getElementById('balance').textContent = data.balance;
+      }
+    });
+}
+
+document.querySelector('.controls form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const amount = this.amount.value;
+
+  fetch('/deduct-funds', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `amount=${encodeURIComponent(amount)}`
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.balance) {
+      updateBalance();
+      document.getElementById('error-message').style.display = 'none';
+    }
+    if (data.error) {
+      document.getElementById('error-message').textContent = data.error;
+      document.getElementById('error-message').style.display = 'block';
+    }
   });
 });
