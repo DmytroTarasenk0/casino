@@ -132,14 +132,6 @@ h1, h2 {
   text-align: center;
 }
 
-.message-result {
-  color: #d4af37;
-  text-align: center;
-  margin-top: 15px;
-  font-weight: bold;
-  min-height: 20px;
-}
-
 @keyframes glow {
   0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
   50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); }

@@ -1,16 +1,20 @@
 const symbols = ['s', 'o', 'S', 'a', 'l', '?'];
 const reels = [
-    document.getElementById('reel1'), 
-    document.getElementById('reel2'), 
-    document.getElementById('reel3')
+  document.getElementById('reel1'), 
+  document.getElementById('reel2'), 
+  document.getElementById('reel3')
 ];
+const spinBtn = document.querySelector('.btn-spin');
+const errorMsg = document.getElementById('error-message');
+const spinMsg = document.getElementById('spin-message');
+const tryMsg = document.getElementById('try-message');
+const amountInput = document.querySelector('.controls form input[name="amount"]');
 
-function spinReel(reel, duration) {
+function spinReel(reel, duration, finalSymbol) {
   const symbolsContainer = document.createElement('div');
   symbolsContainer.className = 'symbols';
 
   const symbolCount = 500;
-  const finalSymbol = symbols[Math.floor(Math.random() * symbols.length)];
 
   const finalDiv = document.createElement('div');
   finalDiv.textContent = finalSymbol;
@@ -43,11 +47,65 @@ function spinReel(reel, duration) {
   }, duration + 50);
 }
 
-document.querySelector('.btn-spin').addEventListener('click', () => {
-  reels.forEach((reel, i) => {
-    spinReel(reel, 1200 + i * 300);
+function getReelResults() {
+  return reels.map(reel => {
+    const symbolDiv = reel.querySelector('.reel-item');
+    return symbolDiv ? symbolDiv.textContent : null;
   });
-});
+}
+
+function checkWin() {
+  const results = getReelResults();
+  const isWin = results.every(symbol => symbol === results[0]);
+  const isStable = results[0]===results[1] || results[1]===results[2];
+
+  if (isWin) {
+    const winAmount = 5 * amountInput.value;
+
+    fetch('/add-funds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `amount=${encodeURIComponent(winAmount)}`
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.balance) {
+          updateBalance();
+        }
+        if (data.error) {
+          errorMsg.textContent = data.error;
+          errorMsg.style.display = 'block';
+        }
+      });
+
+    spinMsg.textContent = 'Jackpot!';
+    spinMsg.style.display = 'block';
+  } else if (isStable) {
+    const winAmount = amountInput.value;
+
+    fetch('/add-funds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `amount=${encodeURIComponent(winAmount)}`
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.balance) {
+          updateBalance();
+        }
+        if (data.error) {
+          errorMsg.textContent = data.error;
+          errorMsg.style.display = 'block';
+        }
+      });
+
+    spinMsg.textContent = 'You win!';
+    spinMsg.style.display = 'block';
+   } else {
+    tryMsg.textContent = 'Try again';
+    tryMsg.style.display = 'block';
+  }
+}
 
 function updateBalance() {
   fetch('/balance')
@@ -59,24 +117,39 @@ function updateBalance() {
     });
 }
 
-document.querySelector('.controls form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const amount = this.amount.value;
+spinBtn.addEventListener('click', () => {
+  if (spinBtn.disabled) return;
+  spinBtn.disabled = true;
+  errorMsg.style.display = 'none';
+  spinMsg.style.display = 'none';
+  tryMsg.style.display = 'none';
+
+  const amount = amountInput.value;
 
   fetch('/deduct-funds', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `amount=${encodeURIComponent(amount)}`
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.balance) {
-      updateBalance();
-      document.getElementById('error-message').style.display = 'none';
-    }
-    if (data.error) {
-      document.getElementById('error-message').textContent = data.error;
-      document.getElementById('error-message').style.display = 'block';
-    }
-  });
+    .then(res => res.json())
+    .then(data => {
+      if (data.balance) {
+        updateBalance();
+        const finalSymbols = reels.map(() => symbols[Math.floor(Math.random() * symbols.length)]);
+        reels.forEach((reel, i) => {
+          spinReel(reel, 1200 + i * 300, finalSymbols[i]);
+        });
+
+        setTimeout(() => {
+          spinBtn.disabled = false;
+          checkWin();
+        }, 1200 + (reels.length - 1) * 300 + 100);
+      }
+
+      if (data.error) {
+        errorMsg.textContent = data.error;
+        errorMsg.style.display = 'block';
+        spinBtn.disabled = false;
+      }
+    });
 });
