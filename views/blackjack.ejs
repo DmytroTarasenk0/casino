@@ -36,13 +36,29 @@
     <div class="dealer-section">
       <div class="hand-label">Dealer</div>
       <div class="hand-cards" id="dealer-cards"></div>
-      <button id="add-dealer-card" class="btn">Add Card to Dealer</button>
     </div>
-    <div class="player-section">
+
+    <div id="player-bet-section" class="player-section">
+      <div class="hand-label">Place Your Bet</div>
+      <form id="bet-form">
+        <input type="number" id="bet-amount" class="input" placeholder="Bet" required />
+        <button type="submit" id="start-round" class="btn btn-bet">Start Round</button>
+      </form>
+      <div id="bet-error" class="error-message" style="display:none;"></div>
+    </div>
+
+    <div id="player-hand-section" class="player-section" style="display:none;">
+      <div id="message" class="blackjack-message" style="display:none;"></div>
       <div class="hand-label">Player</div>
       <div class="hand-cards" id="player-cards"></div>
-      <button id="add-player-card" class="btn">Add Card to Player</button>
+      <div class="blackjack-actions" id="blackjackActions">
+        <button id="hit-btn" class="btn btn-hit">Hit</button>
+        <button id="stand-btn" class="btn btn-stand">Stand</button>
+        <button id="double-btn" class="btn btn-double">Double Down</button>
+      </div>
+      <button id="play-again-btn" class="btn btn-play-again" style="display:none;">Play Again</button>
     </div>
+    
   </div>
 
   <script src="/blackjack.js"></script>

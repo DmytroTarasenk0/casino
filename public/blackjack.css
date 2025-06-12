@@ -90,7 +90,50 @@
   justify-content: center;
   margin: 2px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-}   
+}
+
+.card.face-down {
+  background: repeating-linear-gradient(
+    135deg,
+    #222 0px, #222 6px,
+    #444 6px, #444 12px
+  );
+  border: 1.5px solid #888;
+  color: transparent;
+}
+
+.blackjack-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+  justify-content: center;
+}
+
+.blackjack-message {
+  background: linear-gradient(90deg, #ffe066 60%, #fffbe6 100%);
+  color: #222;
+  border: 2px solid #d4af37;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.15em;
+  padding: 10px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 10px #ffe06655;
+  display: inline-block;
+}
+
+.lose-message {
+  background: linear-gradient(90deg, #ffb3b3 60%, #fff0f0 100%);
+  color: #a80000;
+  border: 2px solid #a80000;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.15em;
+  padding: 10px 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 10px #ffb3b355;
+  display: inline-block;
+}
 
 .rules-box {
   position: absolute;
@@ -142,4 +185,55 @@
 
 .rules-box.collapsed .arrow {
   transform: rotate(180deg);
+}
+
+.btn-bet {
+  background: linear-gradient(to bottom, #ffe066, #d4af37);
+  color: #222;
+}
+.btn-bet:hover {
+  background: linear-gradient(to bottom, #d4af37, #bfa233);
+  box-shadow: 0 0 20px #bfa23388;
+}
+
+.btn-hit {
+  background: linear-gradient(to bottom, #4caf50, #357a38);
+  color: #fff;
+}
+.btn-hit:hover {
+  background: linear-gradient(to bottom, #357a38, #255d27);
+  box-shadow: 0 0 20px #255d2788;
+}
+
+.btn-stand {
+  background: linear-gradient(to bottom, #2196f3, #1565c0);
+  color: #fff;
+}
+.btn-stand:hover {
+  background: linear-gradient(to bottom, #1565c0, #0d397a);
+  box-shadow: 0 0 20px #0d397a88;
+}
+
+.btn-double {
+  background: linear-gradient(to bottom, #ffd600, #ffb300);
+  color: #222;
+}
+.btn-double:hover {
+  background: linear-gradient(to bottom, #ffb300, #b28704);
+  box-shadow: 0 0 20px #b2870488;
+}
+
+.btn-play-again {
+  background: linear-gradient(to bottom, #fffbe6, #ffe066);
+  color: #222;
+  margin-top: 18px;
+}
+.btn-play-again:hover {
+  background: linear-gradient(to bottom, #ffe066, #d4af37);
+  box-shadow: 0 0 20px #d4af3788;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
