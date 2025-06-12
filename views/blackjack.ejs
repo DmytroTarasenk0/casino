@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/blackjack.css">
+  <title>BlackJack</title>
+</head>
+<body>
+  <div class="bank-info">
+    <div class="bank-main">
+      <span>Welcome, <span style="color: #fff;"><%= user.username %></span></span>
+      <span>Balance: $<span id="balance"><%= balance %></span></span>
+    </div>
+    <p style="text-align: center; margin-top: auto; margin-bottom: auto;">
+        Back to <a href="/profile" class="link"> profile</a>
+    </p>
+  </div>
+
+  <div class="rules-box" id="rulesBox">
+    <div class="rules-header" id="rulesHeader">
+      <span>Blackjack Rules</span>
+      <span class="arrow">&#9650;</span>
+    </div>
+    <ul class="rules-list" id="rulesList">
+      <li>Dealer has one face-down card.</li>
+      <li>Dealer must hit until 17 or more by the end of the round.</li>
+      <li>Blackjack(21) pays 2.5, other wins 2.</li>
+      <li>Aces count as 1 or 11.</li>
+      <li>Deck shuffles after each round.</li>
+      <li>Try to get as close to 21 as possible without busting.</li>
+      <li>Double Down allows to double bet and take only one card.</li>
+    </ul>
+  </div>
+
+  <div class="table">
+    <div class="dealer-section">
+      <div class="hand-label">Dealer</div>
+      <div class="hand-cards" id="dealer-cards"></div>
+      <button id="add-dealer-card" class="btn">Add Card to Dealer</button>
+    </div>
+    <div class="player-section">
+      <div class="hand-label">Player</div>
+      <div class="hand-cards" id="player-cards"></div>
+      <button id="add-player-card" class="btn">Add Card to Player</button>
+    </div>
+  </div>
+
+  <script src="/blackjack.js"></script>
+</body>
+</html>

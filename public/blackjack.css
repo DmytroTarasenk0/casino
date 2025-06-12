@@ -1,0 +1,145 @@
+.bank-info {
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  background: rgba(10, 10, 30, 0.85);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  z-index: 10;
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.bank-main {
+  display: flex;
+  flex-direction: row;
+  color: #d4af37;
+  gap: 18px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.bank-back {
+  margin-top: auto;
+  align-self: flex-end;
+  font-size: 0.95em;
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.bank-back:hover {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  gap: 240px;
+}
+
+.dealer-section, .player-section {
+  background: rgba(10, 10, 30, 0.85);
+  border-radius: 15px;
+  margin: 60px 0;
+  padding: 24px 40px;
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(212, 175, 55, 0.10);
+  border: 2px solid #d4af37;
+}
+
+.hand-label {
+  color: #ffe066;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+.hand-cards {
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.card {
+  background: #fff;
+  color: #222;
+  border-radius: 6px;
+  border: 1.5px solid #d4af37;
+  font-size: 1.3em;
+  font-weight: bold;
+  width: 38px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}   
+
+.rules-box {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  background: rgba(30, 30, 30, 0.82);
+  color: #ffe066;
+  border-radius: 10px;
+  border: 2px solid #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.10);
+  z-index: 10;
+  font-size: 1rem;
+  overflow: hidden;
+  width: 480px;
+  min-width: 200px;
+}
+
+.rules-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 18px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background: rgba(30, 30, 30, 0.92);
+}
+
+.rules-list {
+  margin: 10px;
+  padding: 10px 24px;
+  list-style: disc;
+  color: #fffbe6;
+  font-size: 0.98em;
+  transition: opacity 0.3s;
+}
+
+.arrow {
+  font-size: 1.2em;
+  transition: transform 0.3s;
+  user-select: none;
+}
+
+.rules-box.collapsed {
+  max-height: 48px;
+  width: 24px;
+  opacity: 0.5;
+}
+
+.rules-box.collapsed .arrow {
+  transform: rotate(180deg);
+}
